@@ -781,11 +781,15 @@ array_pair:
     | '&' variable                                          { $$ = Expr\ArrayItem[$2, null, true]; }
 ;
 
+encaps_str:
+      T_ENCAPSED_AND_WHITESPACE { $$ = Scalar\String_[$1]; }
+;
+
 encaps_list:
-      encaps_list encaps_var                                { push($1, $2); }
-    | encaps_list T_ENCAPSED_AND_WHITESPACE                 { push($1, $2); }
-    | encaps_var                                            { init($1); }
-    | T_ENCAPSED_AND_WHITESPACE encaps_var                  { init($1, $2); }
+      encaps_list encaps_var                { push($1, $2); }
+    | encaps_list encaps_str                { push($1, $2); }
+    | encaps_var                            { init($1); }
+    | encaps_str encaps_var                 { init($1, $2); }
 ;
 
 encaps_var:
