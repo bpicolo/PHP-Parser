@@ -155,6 +155,7 @@ statement:
     | T_ECHO expr_list ';'                                  { $$ = Stmt\Echo_[$2]; }
     | T_INLINE_HTML                                         { $$ = Stmt\InlineHTML[$1]; }
     | expr ';'                                              { $$ = $1; }
+    | comment                                               { $$ = $1; }
     | T_UNSET '(' variables_list ')' ';'                    { $$ = Stmt\Unset_[$3]; }
     | T_FOREACH '(' expr T_AS foreach_variable ')' foreach_statement
           { $$ = Stmt\Foreach_[$3, $5[0], ['keyVar' => null, 'byRef' => $5[1], 'stmts' => $7]]; }
@@ -168,6 +169,11 @@ statement:
     | T_GOTO T_STRING ';'                                   { $$ = Stmt\Goto_[$2]; }
     | T_STRING ':'                                          { $$ = Stmt\Label[$1]; }
     | error                                                 { $$ = array(); /* means: no statement */ }
+;
+
+comment:
+     T_COMMENT                                             { $$ = Expr\Comment[$1]; }
+    | T_DOC_COMMENT                                        { $$ = Expr\Comment[$1]; }
 ;
 
 catches:
