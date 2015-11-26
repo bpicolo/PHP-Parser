@@ -2,6 +2,7 @@
 
 namespace PhpParser\Parser;
 
+use PhpParser\Comment;
 use PhpParser\Error;
 use PhpParser\Node;
 use PhpParser\Node\Expr;

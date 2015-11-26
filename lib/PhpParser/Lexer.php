@@ -177,15 +177,7 @@ class Lexer
                 $this->line += substr_count($token[1], "\n");
                 $this->filePos += strlen($token[1]);
 
-                if (T_COMMENT === $token[0]) {
-                    if (isset($this->usedAttributes['comments'])) {
-                        return new Comment($token[1], $token[2]);
-                    }
-                } elseif (T_DOC_COMMENT === $token[0]) {
-                    if (isset($this->usedAttributes['comments'])) {
-                        return new Comment\Doc($token[1], $token[2]);;
-                    }
-                } elseif (!isset($this->dropTokens[$token[0]])) {
+                if (!isset($this->dropTokens[$token[0]])) {
                     $value = $token[1];
 
                     if (isset($this->usedAttributes['startLine'])) {

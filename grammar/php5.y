@@ -158,6 +158,8 @@ statement:
     | T_STATIC static_var_list ';'                          { $$ = Stmt\Static_[$2]; }
     | T_ECHO expr_list ';'                                  { $$ = Stmt\Echo_[$2]; }
     | T_INLINE_HTML                                         { $$ = Stmt\InlineHTML[$1]; }
+    | T_COMMENT                                             { $$ = Stmt\Comment[$1]; }
+    | T_DOC_COMMENT                                         { $$ = Stmt\Comment[$1]; }
     | expr ';'                                              { $$ = $1; }
     | T_UNSET '(' variables_list ')' ';'                    { $$ = Stmt\Unset_[$3]; }
     | T_FOREACH '(' expr T_AS foreach_variable ')' foreach_statement
