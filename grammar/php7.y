@@ -172,8 +172,8 @@ statement:
 ;
 
 comment:
-     T_COMMENT                                             { $$ = Expr\Comment[$1]; }
-    | T_DOC_COMMENT                                        { $$ = Expr\Comment[$1]; }
+     T_COMMENT                                             { $$ = Stmt\Comment[$1]; }
+    | T_DOC_COMMENT                                        { $$ = Stmt\Comment[$1]; }
 ;
 
 catches:
