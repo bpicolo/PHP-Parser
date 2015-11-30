@@ -179,11 +179,11 @@ class Lexer
 
                 if (T_COMMENT === $token[0]) {
                     if (isset($this->usedAttributes['comments'])) {
-                        return new Comment($token[1], $token[2]);
+                        $startAttributes['comments'][] = new Comment($token[1], $token[2]);
                     }
                 } elseif (T_DOC_COMMENT === $token[0]) {
                     if (isset($this->usedAttributes['comments'])) {
-                        return new Comment\Doc($token[1], $token[2]);;
+                        $startAttributes['comments'][] = new Comment\Doc($token[1], $token[2]);
                     }
                 } elseif (!isset($this->dropTokens[$token[0]])) {
                     $value = $token[1];

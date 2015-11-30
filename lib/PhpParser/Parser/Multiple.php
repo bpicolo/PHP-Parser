@@ -10,7 +10,6 @@ class Multiple implements Parser {
     private $parsers;
     /** @var Error[] Errors collected during last parse */
     private $errors;
-    private $commentLineMap;
 
     /**
      * Create a parser which will try multiple parsers in an order of preference.
@@ -52,19 +51,13 @@ class Multiple implements Parser {
         return $this->errors;
     }
 
-    public function getCommentLineMap() {
-        return $this->commentLineMap;
-    }
-
     private function tryParse(Parser $parser, $code) {
         $stmts = null;
         $error = null;
-        $commentLineMap = null;
         try {
             $stmts = $parser->parse($code);
         } catch (Error $error) {}
         $errors = $parser->getErrors();
-        $this->commentLineMap = $parser->getCommentLineMap();
         return [$stmts, $errors, $error];
     }
 }

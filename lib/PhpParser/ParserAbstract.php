@@ -94,8 +94,6 @@ abstract class ParserAbstract implements Parser
     /** @var Error[] Errors collected during last parse */
     protected $errors;
 
-    protected $commentLineMap;
-
     /**
      * Creates a parser instance.
      *
@@ -107,7 +105,6 @@ abstract class ParserAbstract implements Parser
     public function __construct(Lexer $lexer, array $options = array()) {
         $this->lexer = $lexer;
         $this->errors = array();
-        $this->commentLineMap = [];
         $this->throwOnError = isset($options['throwOnError']) ? $options['throwOnError'] : true;
     }
 
@@ -122,10 +119,6 @@ abstract class ParserAbstract implements Parser
         return $this->errors;
     }
 
-    public function getCommentLineMap() {
-        return $this->commentLineMap;
-    }
-
     /**
      * Parses PHP code into a node tree.
      *
@@ -137,7 +130,6 @@ abstract class ParserAbstract implements Parser
     public function parse($code) {
         $this->lexer->startLexing($code);
         $this->errors = array();
-        $this->commentLineMap = [];
 
         // We start off with no lookahead-token
         $symbol = self::SYMBOL_NONE;
@@ -177,12 +169,6 @@ abstract class ParserAbstract implements Parser
                     // shifted (not during read). Otherwise you would sometimes get off-by-one errors, when a rule is
                     // reduced after a token was read but not yet shifted.
                     $tokenId = $this->lexer->getNextToken($tokenValue, $startAttributes, $endAttributes);
-
-                    if ($tokenId instanceof Comment || $tokenId instanceof Comment\Doc) {
-                        // Hacky way of getting comments from the lexer
-                        array_push($this->commentLineMap, $tokenId);
-                        continue;
-                    }
 
                     // map the lexer token id to the internally used symbols
                     $symbol = $tokenId >= 0 && $tokenId < $this->tokenToSymbolMapSize
